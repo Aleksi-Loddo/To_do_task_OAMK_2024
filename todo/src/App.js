@@ -14,7 +14,7 @@ export default  function App() {
   const deleteTask = (deleted) => {
     const withoutRemoved = tasks.filter((item) => item !== deleted);
     setTasks(withoutRemoved);
-
+  }
 
   return (
     <div id="container">
@@ -42,4 +42,3 @@ export default  function App() {
     </div>
   );
   }
-}
