@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import Rows from './components/Rows';
 
 
-
-const url = "https://localhost:3000"
+const url = "http://localhost:3001"
 
 
 export default  function App() {
@@ -42,11 +42,20 @@ useEffect(() => {
    axios.post(url + '/create', {
     description: task
   })
-    setTasks([...tasks, task]);
+  .then(response => {
+    // setTasks([...tasks, task]);
+    setTasks([...tasks, { id: response.data.id, description: task }]); 
     setTask('');
+  })
   }
   // delete task
-  const deleteTask = (id) => {
+ 
+    const deleteTask = (id) => {
+      if (isNaN(id)) {
+        alert("Invalid task ID");
+        return;
+      }
+    
     axios.delete(url + '/delete/' + id)
     .then( response => {
     const withoutRemoved = tasks.filter((item) => item.id !== id);
@@ -76,11 +85,10 @@ useEffect(() => {
             </form>
             <ul>
               {tasks.map(item =>(
-                <li>{item}
-                <button className='delete-button' onClick={() => deleteTask(item.id)}>Delete</button>
-                </li>
+               <Rows key={item.id} item={item} deleteTask={deleteTask} /> 
               ))}
             </ul>  
     </div>
   );
-  }
+}
+
