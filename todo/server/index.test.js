@@ -2,8 +2,17 @@
 /* eslint-disable jest/valid-expect */
 import { expect } from "chai";
 
+import { initializeTestDb } from "./helper/test.js";
+//const base_URL = 'http://localhost:3001'; 
 
 describe('GET Tasks', () => {
+
+    before(async () => {
+        await initializeTestDb();
+    });
+
+
+
     it ('should return all tasks', async () => {
         const response = await fetch('http://localhost:3001/');
         const data = await response.json();
