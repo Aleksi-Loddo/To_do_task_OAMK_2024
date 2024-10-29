@@ -76,5 +76,20 @@ describe ('POST Task', () => {
     })
 });
 
-          
-
+describe('POST User', () => {
+        const email = 'register@foo.com';
+        const password = 'register123';
+        it('should register with a valid email and password', async () => {
+            const response = await fetch('http://localhost:3001/user/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+            expect(response.status).to.equal(201, data.error);
+            expect(data).to.be.an('object');
+            expect(data).to.include.all.keys('id', 'email');
+        })
+});
