@@ -1,9 +1,8 @@
 
 import express from 'express';
 import cors from 'cors';
-import todorouter from './routers/todoRouter.js';
-import dotenv from 'dotenv';
-import userrouter from './routers/userRouter.js';
+import router from './router/todoRouter.js';
+
 
 const port = process.env.PORT || 3001; // why undefined without or condition?
 
@@ -11,8 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/', todorouter);
-app.use('/user', userrouter);
+app.use('/', router);
 
 app.listen(port);
 
