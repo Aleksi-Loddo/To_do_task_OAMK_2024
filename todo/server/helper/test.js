@@ -17,9 +17,7 @@ const insertTestUser = async (email, password) => {
         pool.query('INSERT INTO account (email, password) values ($1, $2)',
             [email, hashedpassword])
     })
-
 }      
-
 const getToken = async (email) => {
     return sign({user: email}, process.env.JWT_SECRET_KEY);
 }
