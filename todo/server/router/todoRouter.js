@@ -1,6 +1,7 @@
 import { pool } from "../helper/db.js";
 import { Router } from "express";
 import { empty0rRows } from "../helper/util.js";
+import {auth} from "../helper/auth.js";
 
 const todorouter = Router();
 
@@ -17,7 +18,7 @@ todorouter.get('/', (req,res,next) => {
   });
   
   //  posting a new task
-  todorouter.post('/create', (req, res) => {
+  todorouter.post('/create', auth,(req, res) => {
        
       pool.query('insert into task (description) values ($1) returning *', 
           [req.body.description], (error,result) => {
