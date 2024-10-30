@@ -12,7 +12,7 @@ const sql = fs.readFileSync(path.resolve(_dirname, "../todo.sql"), "utf-8");
     pool.query(sql)
 }
 
-const insertTestUser = async (email, password) => {
+const insertTestUser = (email, password) => {
     hash(password, 10,  (error, hashedpassword) => {
         pool.query('INSERT INTO account (email, password) values ($1, $2)',
             [email, hashedpassword])
