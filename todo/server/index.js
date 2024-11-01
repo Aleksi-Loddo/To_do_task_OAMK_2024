@@ -1,27 +1,22 @@
-
 import express from 'express';
 import cors from 'cors';
-import todorouter from './router/todoRouter.js';
-import userrouter from './router/userRouter.js';
+import todoRouter from './routes/TodoRouter.js';
+import userRouter from './routes/userRouter.js';
 
-
-const port = process.env.PORT || 3001; // why undefined without or condition?
+const port = 3001;
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/', todorouter);
-app.use('/user', userrouter);
+app.use('/', todoRouter);
+app.use('/user', userRouter);
 
-
-app.listen(port,() => {
-    console.log(`Server listening on port ${port}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 
 app.use((err, req, res, next) => {
-  const status = err.statusCode || 500;
-  res.status(statusCode).json({ error: err.message });
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({ error: err.message });
 });
-
-

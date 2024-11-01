@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
-import './App.css';
+import './Home.css';
 import axios from 'axios';
-import Rows from './components/Rows';
+import Rows from '../components/Rows';
+import { useUser } from '../context/useUser';
 
 
 const url = "http://localhost:3001"
 
 
-export default  function App() {
+  function Home() {
 
-  const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState([]); 
+    const { user}  = useUser();
+    const [tasks, setTasks] = useState([]);
+    const [task, setTask] = useState('');
+ 
+
+
   
 
 // get all tasks
@@ -39,24 +44,30 @@ useEffect(() => {
 
 // add task
   const addTask = () => {
-   axios.post(url + '/create', {
-    description: task
-  })
+    const headers = {headers: {Authorization: user.token}};
+
+   axios.post(url + '/create', {description: task}, headers)
+  
   .then(response => {
     // setTasks([...tasks, task]);
     setTasks([...tasks, { id: response.data.id, description: task }]); 
     setTask('');
   })
-  }
+  .catch((error) => {
+    alert(error.response.data.error ? error.response.data.error : error);
+  });
+}
   // delete task
- 
     const deleteTask = (id) => {
+
+      const headers = {headers: {Authorization: user.token}};
+
       if (isNaN(id)) {
         alert("Invalid task ID");
         return;
       }
     
-    axios.delete(url + '/delete/' + id)
+    axios.delete(url + '/delete/' + id, headers)
     .then( response => {
     const withoutRemoved = tasks.filter((item) => item.id !== id);
     setTasks(withoutRemoved);
@@ -66,6 +77,11 @@ useEffect(() => {
   }
 
   
+
+
+
+
+
 
   return (
     <div id="container">
@@ -92,3 +108,4 @@ useEffect(() => {
   );
 }
 
+export default Home;
