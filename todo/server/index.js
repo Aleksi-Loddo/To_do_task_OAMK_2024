@@ -3,9 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import todorouter from './router/todoRouter.js';
 import userrouter from './router/userRouter.js';
-import dotenv from 'dotenv';
 
-dotenv.config()
 
 const port = process.env.PORT || 3001; // why undefined without or condition?
 
@@ -17,11 +15,13 @@ app.use('/', todorouter);
 app.use('/user', userrouter);
 
 
-app.listen(port);
+app.listen(port,() => {
+    console.log(`Server listening on port ${port}`);
+});
 
-app.use((err,req,res,next) => {
-  const status = err.status || 500;
-  res.status(status).json({error: err.message});
+app.use((err, req, res, next) => {
+  const status = err.statusCode || 500;
+  res.status(statusCode).json({ error: err.message });
 });
 
 

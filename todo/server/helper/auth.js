@@ -1,7 +1,14 @@
+
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';    
+
+dotenv.config();
+
 const authorizationRequired = "Authorization Required";
 const invalidCredentials = "Invalid Credentials";
 
 const auth = (req, res, next) => {
+    
     if (!req.headers.authorization) {
         res.statusMessage = authorizationRequired;
         return res.status(401).json({ error: authorizationRequired });

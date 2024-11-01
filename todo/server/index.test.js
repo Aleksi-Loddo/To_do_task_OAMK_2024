@@ -3,7 +3,7 @@
 import { expect } from "chai";
 
 import { initializeTestDb, insertTestUser, getToken } from "./helper/test.js";
-import { Router } from "express";
+
 const base_URL = 'http://localhost:3001'; 
 
 describe('GET Tasks', () => {
@@ -31,8 +31,9 @@ describe ('POST Task', async () => {
     const email = 'post@foo.com'
     const password = 'post123'
     insertTestUser(email, password);
-    const token = await getToken(email);
+     const token = await getToken(email);
     it('should post a task', async () => {
+       
         const response = await fetch( base_URL + '/create', {
             method: 'POST',
             headers: {
@@ -56,6 +57,7 @@ describe ('POST Task', async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: token,
             },
             body: JSON.stringify({description: null}),
         });
@@ -100,7 +102,7 @@ describe('POST register', () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({'emeil': email , 'password': password}),
             });
             const data = await response.json();
             expect(response.status).to.equal(201, data.error);
@@ -115,7 +117,8 @@ describe('POST register', () => {
 describe('POST Login', () => {
     const email = 'login@foo.com';
     const password = 'login123';
-    insertTestUser(email, password);
+     insertTestUser(email, password);    
+    
     it('should login with a valid credendials', async () => {  
         const response = await fetch( base_URL + '/user/login', { 
             method: 'POST',
@@ -125,8 +128,12 @@ describe('POST Login', () => {
             body: JSON.stringify({ 'email': email, 'password': password }),
         })
         const data = await response.json();
+        
         expect(response.status).to.equal(200,data.error);
         expect(data).to.be.an('object');
         expect(data).to.include.all.keys('id', 'email', 'token');
     }) 
 });
+
+
+

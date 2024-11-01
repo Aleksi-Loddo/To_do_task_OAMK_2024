@@ -2,9 +2,8 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 
-
-dotenv.config();
 const enviroment = process.env.NODE_ENV;
+dotenv.config();
 
 const { Pool } = pkg;
 
@@ -17,7 +16,7 @@ const openDb = () => {
     port: process.env.DB_PORT,
   });
 
-  //debuging lines
+  //debuging lines for database connection
   console.log('Database connection details:', {
      enviroment,
     process: process.env.NODE_ENV,
