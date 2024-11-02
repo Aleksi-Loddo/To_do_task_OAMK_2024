@@ -16,11 +16,11 @@ const router = createBrowserRouter([
   },
   {
     path:"/signin",
-    element: <Authentication AuthenticationMode={AuthenticationMode.Login} />
+    element: <Authentication authenticationMode={AuthenticationMode.Login} />
   },
   {
     path: "/signup",
-    element: <Authentication AuthenticationMode={AuthenticationMode.Register} />
+    element: <Authentication authenticationMode={AuthenticationMode.Register} />
   },
   {
     element: <ProtectedRoute />,

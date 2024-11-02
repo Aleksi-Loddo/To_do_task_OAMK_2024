@@ -2,6 +2,7 @@ import { Link,useNavigate } from "react-router-dom";
 import "./Authentication.css";
 import React from "react";
 import { useUser } from "../context/useUser";
+import { useState } from "react";
 
 export const AuthenticationMode = Object.freeze({
     Login: 'Login',
@@ -9,15 +10,37 @@ export const AuthenticationMode = Object.freeze({
     });
 
 
-export default function Authentication({AuthenticationMode}) {
+export default function Authentication({authenticationMode}) {
     const { user, setUser, signUp, signIn } = useUser();
     const Navigate = useNavigate();
+    const [error, setError] = useState(''); // Add error state
+
+    const validatePassword = (password) => {
+        if (!password || password.length < 8) {
+            alert('Password must be at least 8 characters long'); // Add alert here
+            setError('Password must be at least 8 characters long');
+            return false;
+        }
+        setError('');
+        return true;
+    };
+
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("User data before submit:", user); // Debugging line
+        //console.log("User data before submit:", user); // Debugging line
+        
+        // Add password validation before submission
+        if (!validatePassword(user.password)) {
+            return;
+             // Stop form submission if password is invalid
+        }
+
+        
         try {
-            if (AuthenticationMode === AuthenticationMode.Register) {
+            if (authenticationMode === AuthenticationMode.Register) {
                 await signUp(); // Pass user data
                 Navigate('/signin');
             } else {
@@ -31,7 +54,7 @@ export default function Authentication({AuthenticationMode}) {
         }
         return (
             <div>
-                <h3>{AuthenticationMode === AuthenticationMode.Login ? "Sign in" : "Sign up"}</h3>
+                <h3>{authenticationMode === AuthenticationMode.Login ? "Sign in" : "Sign up"}</h3>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>Email</label>
@@ -42,11 +65,11 @@ export default function Authentication({AuthenticationMode}) {
                         <input type="password" name="password" value={user.password} onChange={event => setUser({...user,password: event.target.value})} />
                     </div>
                     <div>
-                        <button>{AuthenticationMode === AuthenticationMode.Login ? "Login" : "Submit"}</button>
+                        <button>{authenticationMode === AuthenticationMode.Login ? "Login" : "Submit"}</button>
                     </div>
                     <div>
-                        <Link to={AuthenticationMode === AuthenticationMode.Login ? '../signup' : '../signin'}> 
-                        {AuthenticationMode === AuthenticationMode.Login ? "No account? Sign up" : "Already signed up? Sign in"}
+                        <Link to={authenticationMode === AuthenticationMode.Login ? '../signup' : '../signin'}> 
+                        {authenticationMode === AuthenticationMode.Login ? "No account? Sign up" : "Already signed up? Sign in"}
                         </Link>
                     </div>
                     </form>

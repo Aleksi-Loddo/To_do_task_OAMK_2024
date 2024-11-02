@@ -5,7 +5,7 @@ import axios from "axios";
 
 
 const url = process.env.REACT_APP_API_URL || "http://localhost:3001";
-console.log("URL:", url);
+//console.log("URL:", url);
 //console.log("URL:", url);
 
 export default function UserProvider({ children }) {
