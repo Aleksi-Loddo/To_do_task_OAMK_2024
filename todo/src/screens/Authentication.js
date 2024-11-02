@@ -19,10 +19,10 @@ export default function Authentication({AuthenticationMode}) {
         try {
             if (AuthenticationMode === AuthenticationMode.Register) {
                 await signUp(); // Pass user data
-                Navigate("/signin");
+                Navigate('/signin');
             } else {
                 await signIn(); // Pass user data
-                Navigate("/");
+                Navigate('/');
             }
         }  catch (error) {
             const message = error.response && error.response.data ? error.response.data.error: error

@@ -3,8 +3,9 @@ import { UserContext } from "./UserContext";
 import { useState } from "react";
 import axios from "axios";
 
-const url = process.env.REACT_APP_API_URL;
 
+const url = process.env.REACT_APP_API_URL || "http://localhost:3001";
+console.log("URL:", url);
 //console.log("URL:", url);
 
 export default function UserProvider({ children }) {
@@ -27,13 +28,14 @@ export default function UserProvider({ children }) {
         const json = JSON.stringify(user);
         const headers = {headers: {"Content-Type": "application/json"}};
         try{
-            const response = await axios.post(url +"/user/login" , json, headers);
-            const token = response.data.token;
-            setUser(response.data);
-            sessionStorage.setItem("user", JSON.stringify(response.data));
-        } catch (error) {
-            setUser({email: "", password: ""});
-            throw error;
+             const response =  await axios.post(url + "/user/login" , json, headers);
+             const { id, email, token } = response.data;
+             const userData = { id, email, token };
+             setUser(userData);
+             sessionStorage.setItem('user', JSON.stringify(userData)); // Save in sessionStorage
+         } catch(error) {
+             setUser({ email: "", password: "" });
+             throw error;
         }
     }
 
