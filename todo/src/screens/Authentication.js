@@ -53,9 +53,9 @@ export default function Authentication({authenticationMode}) {
             }
         }
         return (
-            <div>
+            <div className="auth-container">
                 <h3>{authenticationMode === AuthenticationMode.Login ? "Sign in" : "Sign up"}</h3>
-                <form onSubmit={handleSubmit}>
+                <form className="auth-form" onSubmit={handleSubmit}>
                     <div>
                         <label>Email</label>
                         <input type="email"  name="email" value={user.email} onChange={event => setUser({...user,email: event.target.value})}/>
